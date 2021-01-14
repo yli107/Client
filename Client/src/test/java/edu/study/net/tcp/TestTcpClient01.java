@@ -1,8 +1,9 @@
 package edu.study.net.tcp;
 
+import static org.junit.Assert.*;
+
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.Assert;
 
 public class TestTcpClient01 {
 
