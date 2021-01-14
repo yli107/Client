@@ -1,18 +1,24 @@
 package edu.study.net.tcp;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.regex.Pattern;
 
+/**
+ * Clinet客户端IO
+ * 
+ * @author Leo
+ *
+ */
 public class TcpClientIO {
 	private static final int DEFAULT_PORT = 2077;
 
-	private InetAddress inetAddress;
+	private int port;
 
-	private Socket socket;
+	private String ip;
 
 	public TcpClientIO(String ip, int port) {
 		setServerIp(ip);
@@ -23,22 +29,40 @@ public class TcpClientIO {
 		this(ip, DEFAULT_PORT);
 	}
 
-	public void send(String s) {
+	public String send(String s) {
+		Socket socket = null;
 		OutputStream os = null;
-		if (socket != null) {
+		InputStream is = null;
+		ByteArrayOutputStream baos = null;
+		String info = null;
+		try {
+			socket = new Socket(ip, port);
+			os = socket.getOutputStream();
+			os.write(s.getBytes());
+
+			//  告诉服务器发送结束
+			socket.shutdownOutput();
+			
+			// 回调服务器发回的信息
+			is = socket.getInputStream();
+			baos = new ByteArrayOutputStream();
+			byte[] buffer = new byte[1024];
+			int len;
+			while((len = is.read(buffer)) != -1) {
+				baos.write(buffer,0,len);
+			}
+			info = baos.toString();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
 			try {
-				os = socket.getOutputStream();
-				os.write(s.getBytes());
+				os.close();
 			} catch (IOException e) {
 				e.printStackTrace();
-			} finally {
-				try {
-					os.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
 			}
+
 		}
+		return info;
 	}
 
 	public void setServerIp(String ip) {
@@ -47,42 +71,22 @@ public class TcpClientIO {
 		if (!pattern.matcher(ip).matches()) {
 			throw new IllegalArgumentException("The ip is Invalid");
 		}
-		try {
-			inetAddress = InetAddress.getByName(ip);
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		}
+		this.ip = ip;
 	}
 
 	public void setPort(int port) {
-		if (inetAddress == null) {
-			throw new IllegalArgumentException("The host ip is empty");
-		}
 		if (port > 65535 || port < 0) {
 			throw new IndexOutOfBoundsException("The port must be in range of 0 - 65535");
 		}
-		try {
-			socket = new Socket(inetAddress, port);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		this.port = port;
 
 	}
 
 	public int getPort() {
-		return socket.getPort();
+		return port;
 	}
 
-	public String getHostAddress() {
-		return inetAddress.getHostAddress();
+	public String getIp() {
+		return ip;
 	}
-
-	protected void finallize() {
-		try {
-			socket.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
 }

@@ -16,13 +16,15 @@ public class TestTcpClient01 {
 
 	@Test
 	public void test() {
-		clientIO.send("String");
-		clientIO.send("String1");
-		clientIO.send("String2");
-		clientIO.send("String3");
-		clientIO.send("~!@#$%^&*()_+|}{:?><,./;'[]\'");
-		clientIO.send("1234567890");
-		assertEquals("10.1.15.113",clientIO.getHostAddress());
+		assertEquals("10.1.15.113", clientIO.getIp());
+		assertEquals(2077, clientIO.getPort());
+		assertEquals("发送成功", clientIO.send("String"));
+//		assertEquals("发送成功",clientIO.send("String1"));
+//		assertEquals("发送成功",clientIO.send("String2"));
+//		assertEquals("发送成功",clientIO.send("String3"));
+//		assertEquals("发送成功",clientIO.send("~!@#$%^&*()_+|}{:?><,./;'[]\'"));
+//		assertEquals("发送成功",clientIO.send("1234567890"));
+
 	}
 
 }
