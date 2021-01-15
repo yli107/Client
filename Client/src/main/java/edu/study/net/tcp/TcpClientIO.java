@@ -29,7 +29,7 @@ public class TcpClientIO {
 		this(ip, DEFAULT_PORT);
 	}
 
-	public String send(String s) {
+	public String sendString(String s) {
 		Socket socket = null;
 		OutputStream os = null;
 		InputStream is = null;
@@ -40,7 +40,7 @@ public class TcpClientIO {
 			os = socket.getOutputStream();
 			os.write(s.getBytes());
 
-			//  告诉服务器发送结束
+			// 
 			socket.shutdownOutput();
 			
 			// 回调服务器发回的信息

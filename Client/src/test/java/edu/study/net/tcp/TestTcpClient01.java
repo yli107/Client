@@ -18,12 +18,12 @@ public class TestTcpClient01 {
 	public void test() {
 		assertEquals("10.1.15.113", clientIO.getIp());
 		assertEquals(2077, clientIO.getPort());
-		assertEquals("发送成功", clientIO.send("String"));
-//		assertEquals("发送成功",clientIO.send("String1"));
-//		assertEquals("发送成功",clientIO.send("String2"));
-//		assertEquals("发送成功",clientIO.send("String3"));
-//		assertEquals("发送成功",clientIO.send("~!@#$%^&*()_+|}{:?><,./;'[]\'"));
-//		assertEquals("发送成功",clientIO.send("1234567890"));
+		assertEquals("发送成功", clientIO.sendString("String"));
+		assertEquals("发送成功",clientIO.sendString("String1"));
+		assertEquals("发送成功",clientIO.sendString("String2"));
+		assertEquals("发送成功",clientIO.sendString("String3"));
+		assertEquals("发送成功",clientIO.sendString("~!@#$%^&*()_+|}{:?><,./;'[]\'"));
+		assertEquals("发送成功",clientIO.sendString("1234567890"));
 
 	}
 
